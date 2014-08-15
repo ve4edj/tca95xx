@@ -27,10 +27,10 @@ PUB start(device)
   inversions[device] := $0000
 
   setLock
-  write2bytes(device, $02, outputs)
-  write2bytes(device, $04, inversions)
-  write2bytes(device, $06, directions)
-  read2bytes(device, $00, inputs)
+  write2bytes(device, $02, @outputs)
+  write2bytes(device, $04, @inversions)
+  write2bytes(device, $06, @directions)
+  read2bytes(device, $00, @inputs)
   clearLock
 
 PUB output(device, pin, state)
@@ -39,15 +39,15 @@ PUB output(device, pin, state)
   outputs[device] := (outputs[device] & (!(1 << pin))) | (state << pin)
   directions[device] := directions[device] & (!(1 << pin))
   setLock
-  write2bytes(device, $02, outputs)
-  write2bytes(device, $06, directions)
+  write2bytes(device, $02, @outputs)
+  write2bytes(device, $06, @directions)
   clearLock
 
 PUB input(device, pin)
   device #>= 0
   device <#= 7
   setLock
-  read2bytes(device, $00, inputs)
+  read2bytes(device, $00, @inputs)
   clearLock
   result := (inputs >> pin) & 1
 
@@ -57,8 +57,8 @@ PUB mode(device, pin, direction, inversion)
   directions := (directions & (!(1 << pin))) | (direction << pin)
   inversions := (inversions & (!(1 << pin))) | (inversion << pin)
   setLock
-  write2bytes(device, $04, inversions)
-  write2bytes(device, $06, directions) 
+  write2bytes(device, $04, @inversions)
+  write2bytes(device, $06, @directions) 
   clearLock
 
 PUB getState(device, pin)
