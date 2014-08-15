@@ -73,8 +73,8 @@ PRI write2bytes(device, address, data)
   startDataTransfer
   transmitPacket(I2Caddr | device << 1)
   transmitPacket(address)
-  transmitPacket(data.byte[device*2 + 0]) 
-  transmitPacket(data.byte[device*2 + 1])
+  transmitPacket(byte[data][device*2 + 0]) 
+  transmitPacket(byte[data][device*2 + 1])
   stopDataTransfer
 
 PRI read2bytes(device, address, data)
@@ -84,8 +84,8 @@ PRI read2bytes(device, address, data)
   stopDataTransfer
   startDataTransfer
   transmitPacket(I2Caddr | device << 1 | $01)
-  data.byte[device*2 + 0] := receivePacket(true) 
-  data.byte[device*2 + 1] := receivePacket(false)
+  byte[data][device*2 + 0] := receivePacket(true) 
+  byte[data][device*2 + 1] := receivePacket(false)
   stopDataTransfer
 
 PRI transmitPacket(value) ' 4 Stack Longs
